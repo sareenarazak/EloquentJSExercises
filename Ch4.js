@@ -76,10 +76,44 @@ function arrayToList(input) {
 
 // TODO :: list toarray,  prepend,  recursive
 function listToArray(input) {
+    let array = [];
+    for(let node = input; node; node = node.rest) {
+        array.push(node.value);
+    }
+    return array;
+}
+console.log(arrayToList([1,2,3,4]));
+console.log(listToArray(arrayToList([1,2,3,4])));
 
+
+//  Then add a helper function prepend, which takes an element and
+//  a list and creates a new list that adds the element to the front of the input list,
+function prepend(element, list) {
+    return {value : element, rest : list};
 }
 
-console.log(arrayToList([1,2,3,4]));
+function nth(list, idx) {
+    let pos = 0;
+    let node = list;
+    while(pos < idx && node) {
+        node = node.rest;
+        pos++;
+    }
+    return node ? node.value : undefined;
+}
+let list  = arrayToList([1,2,4,5]);
+console.log(nth(list, 1)); // 2
+console.log(nth(list, 5)); // undefined
+
+function nthRecursive(list, idx) {
+    if(list === null) return undefined;
+    if(idx === 0) return list.value;;
+    return nthRecursive(list.rest, idx - 1 )
+}
+
+console.log(nthRecursive(list, 1)); //1
+console.log(nthRecursive(list, 4)); // undefined
+
 
 /**
  * Write a function deepEqual that takes two values and returns true only if they are the same value or
@@ -91,3 +125,21 @@ console.log(arrayToList([1,2,3,4]));
  * But you have to take one silly exception into account: because of a historical accident,
  * typeof null also produces "object".
  */
+// function deepEqual(obj1, obj2) {
+//     if(obj1 === obj2) return true;
+//
+//     if (typeof obj1 !== "object" || obj1 === null || typeof obj2 !== "object" || obj2 === null) return false;
+//
+//     // return false if the keys length is not same
+//     let obj1Keys = Object.keys(obj1);
+//     let obj2Keys = Object.keys(obj2);
+//
+//     if (obj1Keys.length !== obj2Keys.length) return false;
+//
+//     for (let key of obj1Keys) {
+//         if (!obj2Keys.includes(key) || !deepEqual(obj1.key, obj2.key)) return false;
+//     }
+//
+//     return true;
+//
+// }
