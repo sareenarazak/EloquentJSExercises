@@ -125,21 +125,27 @@ console.log(nthRecursive(list, 4)); // undefined
  * But you have to take one silly exception into account: because of a historical accident,
  * typeof null also produces "object".
  */
-// function deepEqual(obj1, obj2) {
-//     if(obj1 === obj2) return true;
-//
-//     if (typeof obj1 !== "object" || obj1 === null || typeof obj2 !== "object" || obj2 === null) return false;
-//
-//     // return false if the keys length is not same
-//     let obj1Keys = Object.keys(obj1);
-//     let obj2Keys = Object.keys(obj2);
-//
-//     if (obj1Keys.length !== obj2Keys.length) return false;
-//
-//     for (let key of obj1Keys) {
-//         if (!obj2Keys.includes(key) || !deepEqual(obj1.key, obj2.key)) return false;
-//     }
-//
-//     return true;
-//
-// }
+function deepEqual(obj1, obj2) {
+    if(obj1 === obj2) return true;
+
+    if (typeof obj1 !== "object" || obj1 === null || typeof obj2 !== "object" || obj2 === null) return false;
+
+    // return false if the keys length is not same
+    let obj1Keys = Object.keys(obj1);
+    let obj2Keys = Object.keys(obj2);
+
+    if (obj1Keys.length !== obj2Keys.length) return false;
+
+    for (let key of obj1Keys) {
+        if (!obj2Keys.includes(key) || !deepEqual(obj1[key], obj2[key])) return false;
+    }
+
+    return true;
+}
+let obj = {here: {is: "an"}, object: 2};
+console.log(deepEqual(obj, obj));
+// → true
+console.log(deepEqual(obj, {here: 1, object: 2}));
+// → false
+console.log(deepEqual(obj, {here: {is: "an"}, object: 2}));
+// → true
