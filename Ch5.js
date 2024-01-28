@@ -54,16 +54,18 @@ console.log(every([2, 4, 16], n => n < 10)); // false
 console.log(every([], n => n < 10));  // true
 
 function reversePredicate(predicate) {
-    return (number) => !predicate(number)
+    return (number) => !predicate(number);
 }
+
 function everyUsingSome(array, predicate) {
     return !array.some(reversePredicate(predicate));
 }
+
 console.log(everyUsingSome([1, 3, 5], n => n < 10)); //true
 console.log(everyUsingSome([2, 4, 16], n => n < 10)); // false
 console.log(everyUsingSome([], n => n < 10));  // true
 
-
+// TODO : Solve
 /**
  * Write a function that computes the dominant writing direction in a string of text.
  * Remember that each script object has a direction property that can be "ltr" (left to right), "rtl" (right to left),
@@ -71,4 +73,9 @@ console.log(everyUsingSome([], n => n < 10));  // true
  *
  * The dominant direction is the direction of a majority of the characters that have a script associated with them.
  * The characterScript and countBy functions defined earlier in the chapter are probably useful here.
+ */
+/**
+ * Step 1 --> find the letter count for script
+ * Step 2 --> group by the direction
+ * Step 3 --> pick the max count direction
  */
