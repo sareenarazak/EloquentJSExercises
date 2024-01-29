@@ -61,9 +61,11 @@ class VillageState {
 const villageState = VillageState.random();
 
 function runRobot(state, robot, memory) {
+    let turnsTaken  = 0;
     for (let turn = 0;; turn++) {
         if (state.parcels.length === 0) {
             console.log(`Done in ${turn} turns`);
+            turnsTaken = turn;
             break;
         }
         let action = robot(state, memory);
@@ -71,6 +73,7 @@ function runRobot(state, robot, memory) {
         memory = action.memory;
         console.log(`Moved to ${action.direction}`);
     }
+    return turnsTaken;
 }
 
 function randomPick(array) {
@@ -83,7 +86,7 @@ function randomRobot(state) {
 }
 
 // **************** RANDOM ********************* //
-runRobot(villageState, randomRobot);
+//runRobot(villageState, randomRobot);
 
 
 // ************** TWO PASS ******************//
@@ -103,7 +106,7 @@ function routeRobot(state, memory) {
 }
 
 
-runRobot(villageState, routeRobot, []);
+//runRobot(villageState, routeRobot, []);
 
 
 // ******** Shortest path *********//
@@ -134,7 +137,34 @@ function goalOrientedRobot({place, parcels}, route) {
     return {direction: route[0], memory: route.slice(1)};
 }
 
-runRobot(villageState, goalOrientedRobot, []);
+//runRobot(villageState, goalOrientedRobot, []);
+
+// Exercise 1 : Compare two pass robot and goal oriented robot performance
+/**
+ * Write a function compareRobots that takes two robots (and their starting memory).
+ * It should generate 100 tasks and let each of the robots solve each of these tasks. When done, it should output the average number of steps each robot took per task.
+ *
+ * For the sake of fairness, make sure you give each task to both robots,
+ * rather than generating different tasks per robot.
+ */
+function compareRobots(robot1, memory1, robot2, memory2) {
+    let turnsTaken1 = [];
+    let turnsTaken2 = [];
+    for(let round = 0; round < 100; round++) {
+        let villageState = VillageState.random();
+        turnsTaken1[round] = runRobot(villageState, routeRobot, memory1);
+        turnsTaken2[round] = runRobot(villageState, goalOrientedRobot, memory2);
+    }
+    console.log(`Route robot took an average of ${calculateAvg(turnsTaken1)}`);
+    console.log(`Goal oriented robot took an average of ${calculateAvg(turnsTaken2)}`);
+
+}
+
+function calculateAvg(numbers) {
+    return numbers.reduce((n1, n2) => n1 + n2)/numbers.length;
+}
+
+compareRobots(routeRobot, [], goalOrientedRobot, []);
 
 //***** Better way --> 1) instead of robot starting with parcel[0] - we could go through all the parcels and find if there is any parcels at this location
 // ******** even better way --> 2 ) construct a shortest path (all to all ) using djikstra and run through the
