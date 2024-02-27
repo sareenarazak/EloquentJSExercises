@@ -63,7 +63,7 @@ const villageState = VillageState.random();
 function runRobot(state, robot, memory) {
     let turnsTaken;
     for (let turn = 0;; turn++) {
-        if (state.parcels.length === 0 || turn === 40) {
+        if (state.parcels.length === 0) {
             console.log(`Done in ${turn} turns`);
             turnsTaken = turn;
             break;
@@ -185,6 +185,7 @@ function shortestRouteRobot({place, parcels}, route) {
         }
 
         // IMPORTANT : js converts numbers to strings and sorts that way
+        //[1, 100,2]
         pickUpRoutes.sort((p1, p2) => p1.length - p2.length);
         deliverRoutes.sort((d1, d2) => d1.length - d2.length);
 
